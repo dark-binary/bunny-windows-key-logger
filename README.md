@@ -1,4 +1,4 @@
-# windows-key-logger
+# bunny-windows-key-logger
 
 This is a BashBunny payload to install and execute a key logger in a windows machine.
 
